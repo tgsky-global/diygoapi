@@ -55,6 +55,13 @@ func HTTPErrorResponse(w http.ResponseWriter, lgr zerolog.Logger, err error) {
 	unknownErrorResponse(w, lgr, err)
 }
 
+// HTTPEmptyResponse takes a writer and a logger and writes an empty, yet
+// successful response to the client
+func HTTPEmptyResponse(w http.ResponseWriter, lgr zerolog.Logger) {
+	lgr.Debug().Int("HTTP StatusCode", http.StatusNoContent).Msg("no response body sent")
+	w.WriteHeader(http.StatusNoContent)
+}
+
 // typicalErrorResponse replies to the request with the specified error
 // message and HTTP code. It does not otherwise end the request; the
 // caller should ensure no further writes are done to w.

@@ -113,3 +113,20 @@ func TestHTTPErrorResponse_Body(t *testing.T) {
 		})
 	}
 }
+
+func TestHTTPEmptyResponse(t *testing.T) {
+
+	var b bytes.Buffer
+	l := logger.New(&b, zerolog.DebugLevel, false)
+
+	t.Run("empty response", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		HTTPEmptyResponse(w, l)
+		if w.Body != nil && w.Body.Len() != 0 {
+			t.Errorf("expected an empty body, but received [%v]", w.Body)
+		}
+		if w.Code != http.StatusNoContent {
+			t.Errorf("expected StatusNoContent, but received %v", w.Code)
+		}
+	})
+}
